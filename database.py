@@ -6,14 +6,11 @@ import json
 # Firebase 초기화
 def init_firebase():
     if not firebase_admin._apps:
-        # 환경변수에서 서비스 계정 JSON 로드 (Railway 배포용)
         firebase_json = os.getenv("FIREBASE_SERVICE_ACCOUNT")
-        if firebase_json:
-            cred_dict = json.loads(firebase_json)
-            cred = credentials.Certificate(cred_dict)
-        else:
-            # 로컬 개발용: serviceAccountKey.json 파일 직접 사용
-            cred = credentials.Certificate("serviceAccountKey.json")
+        if not firebase_json:
+            raise ValueError("FIREBASE_SERVICE_ACCOUNT 환경변수가 없어요!")
+        cred_dict = json.loads(firebase_json)
+        cred = credentials.Certificate(cred_dict)
         firebase_admin.initialize_app(cred)
     return firestore.client()
 

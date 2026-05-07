@@ -6,7 +6,15 @@ import json
 # Firebase 초기화
 def init_firebase():
     if not firebase_admin._apps:
+        # 환경변수 목록 전체 출력 (디버깅용)
+        print("=== 환경변수 목록 ===")
+        for key in os.environ:
+            print(f"  {key}")
+        print("====================")
+        
         firebase_json = os.getenv("FIREBASE_SERVICE_ACCOUNT")
+        print(f"FIREBASE_SERVICE_ACCOUNT 존재: {firebase_json is not None}")
+        
         if not firebase_json:
             raise ValueError("FIREBASE_SERVICE_ACCOUNT 환경변수가 없어요!")
         cred_dict = json.loads(firebase_json)
